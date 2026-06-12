@@ -1,105 +1,866 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en-IN">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Krish Rathi | AI/ML and Full-Stack Developer Portfolio</title>
-    <meta name="description" content="Official portfolio of Krish Rathi - AI/ML and Full-Stack Developer from India. Explore projects, hackathon wins, skills, GitHub work, and contact details in an interactive terminal portfolio." />
-    <meta name="keywords" content="Krish Rathi, Krish, Krish Rathi portfolio, AI ML developer, full stack developer, react developer, chatbot developer, terminal portfolio, Gurgaon developer, BML Munjal University" />
-    <meta name="author" content="Krish Rathi" />
-    <meta name="theme-color" content="#0a0600" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="googlebot" content="index, follow" />
-    <meta name="format-detection" content="telephone=no" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krish Rathi - AI/ML & Full-Stack Developer</title>
+<meta name="description" content="Krish Rathi - AI/ML and Full-Stack Developer building AI agents, RAG chatbots, agentic browsers, and production-grade web platforms.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Archivo:wght@400;500;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBFAF5;
+  --paper-2:#F2EFE6;
+  --ink:#15151C;
+  --ink-soft:#4A4A58;
+  --red:#E0202F;
+  --red-deep:#B30E1E;
+  --blue:#2342D6;
+  --blue-deep:#16289B;
+  --yellow:#FFC400;
+  --line:rgba(21,21,28,.16);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{background:var(--paper);color:var(--ink);overflow-x:hidden}
+body{font-family:'Archivo',sans-serif;line-height:1.6;cursor:none}
+::selection{background:var(--yellow);color:var(--ink)}
+a{color:inherit;text-decoration:none}
 
-    <link rel="canonical" href="https://krishrathi.online/" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
-    <link rel="manifest" href="/site.webmanifest" />
+/* ---------- halftone comic texture ---------- */
+.halftone{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.4;
+  background-image:radial-gradient(rgba(21,21,28,.09) 1px,transparent 1.4px);
+  background-size:14px 14px}
+.halftone-red{position:fixed;top:-20vh;right:-15vw;width:55vw;height:55vw;z-index:1;pointer-events:none;opacity:.14;border-radius:50%;
+  background-image:radial-gradient(var(--red) 1.4px,transparent 2px);background-size:11px 11px;
+  -webkit-mask-image:radial-gradient(circle,black 0%,transparent 68%);mask-image:radial-gradient(circle,black 0%,transparent 68%);
+  animation:dotDrift 14s ease-in-out infinite alternate}
+@keyframes dotDrift{from{transform:translate(0,0) rotate(0)}to{transform:translate(4vw,-3vh) rotate(8deg)}}
 
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Krish Rathi Portfolio" />
-    <meta property="og:title" content="Krish Rathi | AI/ML and Full-Stack Developer Portfolio" />
-    <meta property="og:description" content="Official portfolio of Krish Rathi with projects, achievements, skills, GitHub activity, and contact details." />
-    <meta property="og:url" content="https://krishrathi.online/" />
-    <meta property="og:image" content="https://krishrathi.online/og-image.svg" />
-    <meta property="og:locale" content="en_IN" />
+/* ---------- cursor ---------- */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%)}
+.cursor-dot{width:10px;height:10px;background:var(--red);border:2px solid var(--ink)}
+.cursor-ring{width:44px;height:44px;border:2px solid var(--ink);transition:width .25s,height .25s,border-color .25s,background .25s}
+.cursor-ring.hovering{width:86px;height:86px;border-color:var(--red);background:rgba(224,32,47,.07)}
+.cursor-label{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;font-family:'Bangers',cursive;font-size:15px;letter-spacing:.1em;color:var(--blue);transform:translate(16px,20px) rotate(-4deg);opacity:0;transition:opacity .3s;text-shadow:1.5px 1.5px 0 var(--paper),2.5px 2.5px 0 var(--ink)}
+#webTrail{position:fixed;inset:0;z-index:9998;pointer-events:none}
+@media (hover:none){.cursor-dot,.cursor-ring,.cursor-label,#webTrail{display:none}body{cursor:auto}}
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Krish Rathi | AI/ML and Full-Stack Developer Portfolio" />
-    <meta name="twitter:description" content="Official portfolio of Krish Rathi with terminal UI, projects, skills, and achievements." />
-    <meta name="twitter:image" content="https://krishrathi.online/og-image.svg" />
-    <meta name="twitter:creator" content="@krishrathi1" />
+/* ---------- loader ---------- */
+#loader{position:fixed;inset:0;background:var(--paper);z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transition:opacity .9s,visibility .9s}
+#loader.done{opacity:0;visibility:hidden}
+#loader::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(224,32,47,.12) 1.6px,transparent 2px);background-size:16px 16px;animation:dotDrift 6s linear infinite alternate}
+.loader-logo{font-family:'Bangers',cursive;font-size:clamp(44px,8vw,90px);letter-spacing:.06em;color:var(--red);
+  text-shadow:2px 2px 0 var(--paper),4px 4px 0 var(--ink),7px 7px 0 rgba(35,66,214,.5);
+  animation:loaderBounce 1s ease-in-out infinite}
+@keyframes loaderBounce{0%,100%{transform:rotate(-2deg) scale(1)}50%{transform:rotate(2deg) scale(1.05)}}
+.loader-bar{width:min(340px,70vw);height:14px;background:var(--paper);border:3px solid var(--ink);border-radius:99px;overflow:hidden;box-shadow:4px 4px 0 var(--ink)}
+.loader-bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(45deg,var(--red) 0 12px,var(--blue) 12px 24px);transition:width .2s}
+.loader-status{font-family:'Bangers',cursive;font-size:18px;letter-spacing:.12em;color:var(--blue);min-height:24px;transform:rotate(-2deg)}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+#gl{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "Person",
-            "@id": "https://krishrathi.online/#person",
-            "name": "Krish Rathi",
-            "url": "https://krishrathi.online/",
-            "jobTitle": "AI/ML and Full-Stack Developer",
-            "description": "AI/ML and Full-Stack Developer focused on LLMs, chatbots, and production web apps.",
-            "email": "mailto:krishrathi877@gmail.com",
-            "sameAs": [
-              "https://github.com/krishrathi1",
-              "https://www.linkedin.com/in/krish-rathi",
-              "https://leetcode.com/u/krishrathi/"
-            ],
-            "alumniOf": {
-              "@type": "CollegeOrUniversity",
-              "name": "BML Munjal University"
-            },
-            "knowsAbout": [
-              "Artificial Intelligence",
-              "Machine Learning",
-              "Large Language Models",
-              "React",
-              "Next.js",
-              "Node.js",
-              "TypeScript",
-              "Python",
-              "RAG systems"
-            ]
-          },
-          {
-            "@type": "WebSite",
-            "@id": "https://krishrathi.online/#website",
-            "name": "Krish Rathi Portfolio",
-            "url": "https://krishrathi.online/",
-            "publisher": {
-              "@id": "https://krishrathi.online/#person"
-            },
-            "inLanguage": "en-IN"
-          },
-          {
-            "@type": "ProfilePage",
-            "@id": "https://krishrathi.online/#profile",
-            "url": "https://krishrathi.online/",
-            "name": "Krish Rathi Portfolio",
-            "mainEntity": {
-              "@id": "https://krishrathi.online/#person"
-            },
-            "isPartOf": {
-              "@id": "https://krishrathi.online/#website"
-            }
-          }
-        ]
-      }
-    </script>
+/* ---------- HUD ---------- */
+.hud{position:fixed;z-index:7000;pointer-events:none;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;color:var(--ink-soft);text-transform:uppercase}
+.hud b{color:var(--red);font-weight:500}
+.hud-tl{top:84px;left:22px}.hud-br{bottom:18px;right:22px;text-align:right}
+.hud::before{content:"";position:absolute;width:18px;height:18px;border:2px solid var(--ink)}
+.hud-tl::before{top:-12px;left:-8px;border-right:none;border-bottom:none}
+.hud-br::before{bottom:-6px;right:-8px;border-left:none;border-top:none}
+@media(max-width:860px){.hud{display:none}}
+
+.progress{position:fixed;top:0;left:0;height:5px;width:100%;z-index:8000}
+.progress i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--red) 0 30px,var(--blue) 30px 60px);border-bottom:2px solid var(--ink)}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:7500;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(20px,5vw,64px);background:rgba(251,250,245,.75);backdrop-filter:blur(10px);border-bottom:3px solid var(--ink)}
+.nav-logo{font-family:'Bangers',cursive;font-size:24px;letter-spacing:.06em;color:var(--ink)}
+.nav-logo span{color:var(--red)}
+.nav-links{display:flex;gap:32px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.nav-links a{position:relative;color:var(--ink-soft);transition:color .3s}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:3px;background:var(--red);transition:width .35s}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{width:100%}
+@media(max-width:760px){.nav-links{display:none}}
+.nav-cta{font-family:'Bangers',cursive;font-size:16px;letter-spacing:.08em;border:3px solid var(--ink);padding:8px 20px;border-radius:99px;color:var(--ink);background:var(--yellow);box-shadow:3px 3px 0 var(--ink);transition:.25s}
+.nav-cta:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+
+/* ---------- layout ---------- */
+main{position:relative;z-index:2}
+section{position:relative;padding:clamp(90px,14vh,160px) clamp(20px,6vw,96px)}
+.skew-wrap{will-change:transform}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:14px;margin-bottom:28px;font-weight:500}
+.eyebrow::before{content:"";width:36px;height:3px;background:var(--red)}
+
+/* ---------- 3D hero text ---------- */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:130px;perspective:1100px}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:clamp(11px,1.3vw,14px);letter-spacing:.45em;text-transform:uppercase;color:var(--blue);margin-bottom:26px;opacity:0;font-weight:500}
+.h1-3d{transform-style:preserve-3d;will-change:transform}
+.hero h1{font-family:'Bangers',cursive;font-weight:400;font-size:clamp(60px,12vw,180px);line-height:.92;letter-spacing:.015em;text-transform:uppercase;transform-style:preserve-3d}
+.hero h1 .row{display:block;overflow:visible;transform-style:preserve-3d}
+.hero h1 .row span{display:inline-block;transform:translateY(120%) rotateX(-80deg);transform-style:preserve-3d}
+.t3d-red{color:var(--red);text-shadow:1px 1px 0 var(--red-deep),2px 2px 0 var(--red-deep),3px 3px 0 var(--red-deep),4px 4px 0 var(--red-deep),5px 5px 0 var(--red-deep),6px 6px 0 var(--ink),9px 9px 0 rgba(21,21,28,.18)}
+.t3d-blue{color:var(--blue);text-shadow:1px 1px 0 var(--blue-deep),2px 2px 0 var(--blue-deep),3px 3px 0 var(--blue-deep),4px 4px 0 var(--blue-deep),5px 5px 0 var(--blue-deep),6px 6px 0 var(--ink),9px 9px 0 rgba(21,21,28,.18)}
+.t3d-ink{color:var(--paper);-webkit-text-stroke:3px var(--ink);text-shadow:5px 5px 0 var(--yellow),8px 8px 0 var(--ink)}
+.hero-sub{margin-top:36px;max-width:560px;font-size:clamp(16px,1.7vw,20px);color:var(--ink-soft);opacity:0;font-weight:500}
+.hero-sub b{color:var(--ink);font-weight:700}
+.hero-actions{display:flex;gap:18px;margin-top:44px;flex-wrap:wrap;opacity:0}
+.btn{position:relative;display:inline-flex;align-items:center;gap:12px;font-family:'Bangers',cursive;font-size:20px;letter-spacing:.08em;padding:14px 32px;border-radius:14px;border:3px solid var(--ink);transition:.25s;will-change:transform;overflow:hidden}
+.btn-primary{background:var(--red);color:#fff;box-shadow:5px 5px 0 var(--ink)}
+.btn-primary:hover{transform:translate(-3px,-3px) rotate(-1deg);box-shadow:9px 9px 0 var(--ink)}
+.btn-ghost{background:var(--paper);color:var(--ink);box-shadow:5px 5px 0 var(--ink)}
+.btn-ghost:hover{transform:translate(-3px,-3px) rotate(1deg);box-shadow:9px 9px 0 var(--ink);background:var(--yellow)}
+.btn .dot{width:9px;height:9px;border-radius:50%;background:#fff;border:2px solid var(--ink);animation:blink 1.2s infinite}
+.btn-ghost .dot{background:var(--red)}
+@keyframes blink{50%{opacity:.25}}
+.hero-meta{position:absolute;bottom:36px;left:clamp(20px,6vw,96px);right:clamp(20px,6vw,96px);display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);opacity:0;font-weight:500}
+.scroll-hint{display:flex;flex-direction:column;align-items:center;gap:10px}
+.scroll-hint .wheel{width:3px;height:46px;background:linear-gradient(180deg,var(--red),transparent);animation:dropLine 1.8s ease-in-out infinite}
+@keyframes dropLine{0%{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1);transform-origin:top}56%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- marquees ---------- */
+.marquee{position:relative;z-index:2;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);overflow:hidden;padding:16px 0;background:var(--ink);transform:rotate(-1.2deg) scale(1.02);margin:10px 0}
+.marquee.m2{background:var(--red);transform:rotate(1deg) scale(1.02)}
+.marquee-track{display:flex;width:max-content;font-family:'Bangers',cursive;font-size:clamp(20px,2.6vw,30px);text-transform:uppercase;letter-spacing:.14em;color:var(--paper)}
+.marquee-track span{padding:0 30px;white-space:nowrap}
+.marquee-track .hl{color:var(--yellow)}
+.m-fwd .marquee-track{animation:marquee 22s linear infinite}
+.m-rev .marquee-track{animation:marqueeRev 26s linear infinite}
+@keyframes marquee{to{transform:translateX(-50%)}}
+@keyframes marqueeRev{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+
+/* ---------- headings ---------- */
+.h2{font-family:'Bangers',cursive;font-weight:400;font-size:clamp(40px,6.5vw,86px);line-height:1;text-transform:uppercase;max-width:960px;letter-spacing:.02em;transform-style:preserve-3d}
+.h2 .accent{color:var(--red);text-shadow:3px 3px 0 var(--ink)}
+.h2 .accent-b{color:var(--blue);text-shadow:3px 3px 0 var(--ink)}
+.reveal{opacity:0;transform:translateY(60px)}
+.flip3d{opacity:0;transform:rotateX(-85deg) translateY(40px);transform-origin:top center}
+
+/* ---------- about ---------- */
+.about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(40px,6vw,90px);margin-top:60px;align-items:start}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr}}
+.about-text p{font-size:clamp(16px,1.7vw,20px);color:var(--ink-soft);margin-bottom:24px;font-weight:500}
+.about-text p b{color:var(--ink);font-weight:700}
+.about-text .quote{font-family:'Bangers',cursive;font-size:clamp(22px,2.4vw,30px);color:var(--ink);border:3px solid var(--ink);border-radius:18px;padding:22px 26px;background:var(--yellow);box-shadow:6px 6px 0 var(--ink);transform:rotate(-1deg);letter-spacing:.04em}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stat{position:relative;background:var(--paper);border:3px solid var(--ink);border-radius:16px;padding:26px 24px;box-shadow:5px 5px 0 var(--ink);transition:.25s;overflow:hidden}
+.stat:nth-child(odd){transform:rotate(-1deg)}
+.stat:nth-child(even){transform:rotate(1deg)}
+.stat:hover{transform:translate(-3px,-3px) rotate(0);box-shadow:9px 9px 0 var(--ink);background:#FFF}
+.stat .num{font-family:'Bangers',cursive;font-size:clamp(34px,3.8vw,52px);color:var(--red);text-shadow:2px 2px 0 var(--ink)}
+.stat .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px;font-weight:500}
+
+/* ---------- comic panel cards ---------- */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:64px;perspective:1400px}
+@media(max-width:980px){.cards{grid-template-columns:1fr}}
+.card{position:relative;border:3px solid var(--ink);border-radius:20px;padding:40px 32px;background:var(--paper);box-shadow:8px 8px 0 var(--ink);transform-style:preserve-3d;will-change:transform;overflow:hidden;transition:box-shadow .3s}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%),rgba(255,196,0,.35),transparent 45%);opacity:0;transition:opacity .4s;pointer-events:none}
+.card:hover::before{opacity:1}
+.card:hover{box-shadow:14px 14px 0 var(--ink)}
+.card .badge{position:absolute;top:-3px;right:24px;font-family:'Bangers',cursive;font-size:16px;letter-spacing:.08em;background:var(--blue);color:#fff;border:3px solid var(--ink);border-top:none;padding:8px 14px;border-radius:0 0 12px 12px}
+.card:nth-child(2) .badge{background:var(--red)}
+.card:nth-child(3) .badge{background:var(--yellow);color:var(--ink)}
+.card h3{font-family:'Bangers',cursive;font-size:clamp(26px,2.4vw,34px);margin:20px 0 14px;text-transform:uppercase;letter-spacing:.04em;transform:translateZ(46px)}
+.card p{color:var(--ink-soft);font-size:15px;transform:translateZ(28px);font-weight:500}
+.card .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;transform:translateZ(20px)}
+.chip{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border:2px solid var(--ink);border-radius:99px;padding:6px 12px;color:var(--ink);background:var(--paper-2);font-weight:500}
+.card .glyph{font-size:38px;display:inline-block;animation:floatGlyph 4s ease-in-out infinite;transform:translateZ(56px);filter:drop-shadow(3px 3px 0 rgba(21,21,28,.35))}
+.card:nth-child(2) .glyph{animation-delay:-1.3s}
+.card:nth-child(3) .glyph{animation-delay:-2.6s}
+@keyframes floatGlyph{0%,100%{transform:translateZ(56px) translateY(0) rotate(-5deg)}50%{transform:translateZ(56px) translateY(-12px) rotate(6deg)}}
+
+/* ---------- process ---------- */
+.steps{margin-top:70px}
+.step{display:grid;grid-template-columns:110px 1fr 1.2fr;gap:30px;align-items:center;padding:34px 26px;border:3px solid var(--ink);border-radius:18px;margin-bottom:18px;background:var(--paper);box-shadow:5px 5px 0 var(--ink);transition:.3s}
+.step:nth-child(odd){transform:rotate(-.5deg)}
+.step:nth-child(even){transform:rotate(.5deg)}
+.step:hover{transform:translate(-4px,-4px) rotate(0);box-shadow:10px 10px 0 var(--ink);background:#fff}
+@media(max-width:760px){.step{grid-template-columns:1fr;gap:10px}}
+.step .no{font-family:'Bangers',cursive;font-size:44px;color:var(--paper);-webkit-text-stroke:2px var(--ink);text-shadow:4px 4px 0 var(--red)}
+.step h4{font-family:'Bangers',cursive;font-size:clamp(22px,2.2vw,28px);text-transform:uppercase;letter-spacing:.04em}
+.step p{color:var(--ink-soft);font-size:15px;font-weight:500}
+
+/* ---------- contact ---------- */
+.contact{text-align:center;min-height:92svh;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.contact .h2{margin:0 auto}
+.mega-cta{margin-top:54px;display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.social-row{margin-top:56px;display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.social{display:flex;align-items:center;gap:12px;border:3px solid var(--ink);padding:15px 26px;border-radius:16px;font-family:'Bangers',cursive;font-size:17px;letter-spacing:.08em;color:var(--ink);transition:.25s;background:var(--paper);box-shadow:5px 5px 0 var(--ink)}
+.social:hover{transform:translate(-3px,-5px) rotate(-1deg);box-shadow:9px 11px 0 var(--ink)}
+.social.ig:hover{background:#FCE7F0}
+.social.yt:hover{background:#FDE5E5}
+.social.wa:hover{background:#E3F8EB}
+.social svg{width:20px;height:20px}
+
+footer{position:relative;z-index:2;border-top:3px solid var(--ink);padding:30px clamp(20px,6vw,96px);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);background:var(--paper-2);font-weight:500}
+
+/* ---------- comic click burst ---------- */
+.burst{position:fixed;z-index:9500;pointer-events:none;transform:translate(-50%,-50%);font-family:'Bangers',cursive;display:flex;align-items:center;justify-content:center}
+.burst svg{position:absolute;width:150px;height:150px}
+.burst b{position:relative;font-size:30px;letter-spacing:.06em;color:#fff;transform:rotate(-6deg)}
+.websplat{position:fixed;z-index:9400;pointer-events:none;transform:translate(-50%,-50%)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  body{cursor:auto}
+  .cursor-dot,.cursor-ring,.cursor-label,#webTrail{display:none}
+  .reveal,.flip3d,.hero-tag,.hero-sub,.hero-actions,.hero-meta{opacity:1!important;transform:none!important}
+  .hero h1 .row span{transform:none!important}
+}
+</style>
 </head>
 <body>
-    <noscript>
-      Krish Rathi is an AI/ML and Full-Stack Developer from India. This site includes projects, skills, hackathon achievements, GitHub profile, and contact information.
-    </noscript>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+
+<div id="loader">
+  <div class="loader-logo">KRISH!</div>
+  <div class="loader-bar"><i id="loadFill"></i></div>
+  <div class="loader-status" id="loadStatus">LOADING AI CORE...</div>
+</div>
+
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+<div class="cursor-label" id="cursorLabel"></div>
+<canvas id="gl"></canvas>
+<canvas id="webTrail"></canvas>
+<div class="halftone"></div>
+<div class="halftone-red"></div>
+<div class="progress"><i id="progFill"></i></div>
+
+<div class="hud hud-tl">SYS // <b>KRISH.AI</b><br>NODE: GURGAON-IN</div>
+<div class="hud hud-br">WEB FIRED <b id="hudWeb">000%</b><br>SCROLL <b id="hudScroll">000%</b></div>
+
+<nav>
+  <a class="nav-logo hoverable" href="#top">KRISH<span>.AI</span></a>
+  <div class="nav-links">
+    <a class="hoverable" href="#about">About</a>
+    <a class="hoverable" href="#work">Work</a>
+    <a class="hoverable" href="#process">Stack</a>
+    <a class="hoverable" href="#contact">Contact</a>
+  </div>
+  <a class="nav-cta hoverable" href="/Krish_Rathi_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+</nav>
+
+<main id="top">
+<div class="skew-wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag" id="scrambleTag">// AI/ML DEVELOPER / FULL-STACK BUILDER / GURGAON, INDIA</div>
+    <div class="h1-3d" id="h13d">
+      <h1>
+        <span class="row"><span class="t3d-ink">I BUILD</span></span>
+        <span class="row"><span class="t3d-red">AI AGENTS.</span></span>
+        <span class="row"><span class="t3d-blue">FULL-STACK APPS.</span></span>
+      </h1>
+    </div>
+    <p class="hero-sub">Hey, I'm <b>Krish Rathi</b> - an AI/ML and full-stack developer. I build <b>RAG chatbots, agentic browsers, AI stock tools, and offline-first platforms</b> with Next.js, Gemini AI, Firebase, and AWS. Practical products, real users, measurable impact.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary hoverable magnetic" data-label="SEE WORK!" href="#work"><span class="dot"></span> View Projects</a>
+      <a class="btn btn-ghost hoverable magnetic" data-label="HIRE ME!" href="#contact">Contact Me</a>
+    </div>
+    <div class="hero-meta">
+      <div>3x WINS / 6x NATIONAL FINALIST</div>
+      <div class="scroll-hint"><div class="wheel"></div>SCROLL TO FIRE THE WEB</div>
+      <div>LLM / RAG / NEXT.JS / AWS</div>
+    </div>
+  </section>
+
+    <!-- DOUBLE MARQUEE -->
+  <div class="marquee m-fwd">
+    <div class="marquee-track">
+      <span>AI Agents</span><span class="hl">/</span><span>RAG Chatbots</span><span class="hl">/</span><span>Next.js</span><span class="hl">/</span><span>Gemini AI</span><span class="hl">/</span><span>Firebase</span><span class="hl">/</span>
+      <span>AI Agents</span><span class="hl">/</span><span>RAG Chatbots</span><span class="hl">/</span><span>Next.js</span><span class="hl">/</span><span>Gemini AI</span><span class="hl">/</span><span>Firebase</span><span class="hl">/</span>
+    </div>
+  </div>
+  <div class="marquee m-rev m2">
+    <div class="marquee-track">
+      <span>Build</span><span>/</span><span>Automate</span><span>/</span><span>Ship</span><span>/</span><span>Scale</span><span>/</span><span>Repeat</span><span>/</span><span>Build</span><span>/</span><span>Automate</span><span>/</span><span>Ship</span><span>/</span><span>Scale</span><span>/</span><span>Repeat</span><span>/</span>
+      <span>Build</span><span>/</span><span>Automate</span><span>/</span><span>Ship</span><span>/</span><span>Scale</span><span>/</span><span>Repeat</span><span>/</span><span>Build</span><span>/</span><span>Automate</span><span>/</span><span>Ship</span><span>/</span><span>Scale</span><span>/</span><span>Repeat</span><span>/</span>
+    </div>
+  </div>
+
+    <!-- ABOUT -->
+  <section id="about">
+    <div class="eyebrow reveal">01 / Who is Krish</div>
+    <h2 class="h2 flip3d">AI/ML ENGINEER WITH <span class="accent">PRODUCT INSTINCTS</span></h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="reveal">I'm a <b>B.Tech Computer Science student at BML Munjal University</b> and a builder focused on practical AI products: agentic browsers, RAG-backed educational chatbots, stock intelligence tools, and agricultural AI platforms.</p>
+        <p class="reveal">My live coding footprint spans <b>59 public GitHub repos</b>, <b>1,161 GitHub contributions in 2026</b>, and <b>264 LeetCode problems solved</b> across Easy, Medium, and Hard.</p>
+        <p class="quote reveal">"I don't just demo AI - I ship it, commit it, and keep the streak alive."</p>
+      </div>
+      <div class="stats reveal">
+        <div class="stat"><div class="num" data-count="59">0</div><div class="lbl">GitHub Public Repos</div></div>
+        <div class="stat"><div class="num" data-count="1161">0</div><div class="lbl">GitHub Contributions 2026</div></div>
+        <div class="stat"><div class="num" data-count="264">0</div><div class="lbl">LeetCode Problems Solved</div></div>
+        <div class="stat"><div class="num" data-count="164">0</div><div class="lbl">LeetCode Active Days</div></div>
+      </div>
+    </div>
+  </section>
+
+    <!-- SERVICES -->
+  <section id="work">
+    <div class="eyebrow reveal">02 / Featured Work</div>
+    <h2 class="h2 flip3d">FROM IDEA TO <span class="accent-b">WORKING AI</span> PRODUCT</h2>
+    <div class="cards">
+      <div class="card hoverable reveal">
+        <div class="badge">ISSUE #01</div>
+        <div class="glyph">AI</div>
+        <h3>StockVision</h3>
+        <p>AI stock intelligence platform with Gemini AI, real-time price feeds, financial news, semantic search, portfolio tracking, alerts, and interactive charts.</p>
+        <div class="chip-row"><span class="chip">Next.js</span><span class="chip">Gemini AI</span><span class="chip">TypeScript</span><span class="chip">REST APIs</span></div>
+      </div>
+      <div class="card hoverable reveal">
+        <div class="badge">ISSUE #02</div>
+        <div class="glyph">AG</div>
+        <h3>KishanBhai</h3>
+        <p>Offline-first agricultural intelligence PWA with 10+ AI features, Gemini vision crop detection, multilingual assistance, market prices, weather, and soil data.</p>
+        <div class="chip-row"><span class="chip">Next.js</span><span class="chip">Firebase</span><span class="chip">Genkit</span><span class="chip">PWA</span></div>
+      </div>
+      <div class="card hoverable reveal">
+        <div class="badge">ISSUE #03</div>
+        <div class="glyph">BOT</div>
+        <h3>Agentic AI Browser</h3>
+        <p>LLM-powered browser for autonomous multi-step task execution, semantic web search, summarization, and workflow automation through tool-use prompting.</p>
+        <div class="chip-row"><span class="chip">LLMs</span><span class="chip">Agentic AI</span><span class="chip">Next.js</span><span class="chip">Zero GPU</span></div>
+      </div>
+    </div>
+  </section>
+
+    <!-- PROCESS -->
+  <section id="process">
+    <div class="eyebrow reveal">03 / Stack & Proof</div>
+    <h2 class="h2 flip3d">SKILLS THAT TURN <span class="accent">PROMPTS</span> INTO PRODUCTS</h2>
+    <div class="steps">
+      <div class="step reveal"><div class="no">01</div><h4>AI/ML</h4><p>LLM fine-tuning, RAG systems, prompt engineering, Gemini API, Vertex AI, Genkit, TensorFlow, OpenCV, n8n.</p></div>
+      <div class="step reveal"><div class="no">02</div><h4>Full Stack</h4><p>React, Next.js, Node.js, TypeScript, REST APIs, GraphQL, SSR/SSG, PWA, HTML, CSS, JavaScript.</p></div>
+      <div class="step reveal"><div class="no">03</div><h4>Cloud</h4><p>AWS Lambda, Rekognition, S3, Firebase Firestore, Auth, Hosting, Docker, Linux, Nginx, Git.</p></div>
+      <div class="step reveal"><div class="no">04</div><h4>Wins</h4><p>IIT Ropar Hackathon Winner 2025, 3x wins, 6x national-level finalist, Google Cloud GenAI certifications.</p></div>
+    </div>
+  </section>
+
+    <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="eyebrow reveal" style="justify-content:center">04 / Let's Build</div>
+    <h2 class="h2 flip3d">READY TO BUILD <span class="accent">AI-FIRST?</span></h2>
+    <p class="hero-sub reveal" style="opacity:1;margin:26px auto 0;text-align:center">I'm open to internships, AI/ML roles, and full-stack opportunities. <b>Send a message and let's build something real.</b></p>
+    <div class="mega-cta reveal">
+      <a class="btn btn-primary hoverable magnetic" data-label="EMAIL NOW!" href="mailto:krishrathi877@gmail.com"><span class="dot"></span> Email Krish</a>
+      <a class="btn btn-ghost hoverable magnetic" data-label="RESUME!" href="/Krish_Rathi_Resume.pdf" target="_blank" rel="noopener">Download Resume</a>
+    </div>
+    <div class="social-row reveal">
+      <a class="social ig hoverable" href="https://github.com/krishrathi1" target="_blank" rel="noopener">GitHub</a>
+      <a class="social yt hoverable" href="https://www.linkedin.com/in/krish-rathi-036222293/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="social wa hoverable" href="https://leetcode.com/u/krishrathi/" target="_blank" rel="noopener">LeetCode</a>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>
+  <div>2026 KRISH RATHI - AI/ML & FULL-STACK DEVELOPER</div>
+  <div>GURGAON, INDIA - BUILT WITH AI</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+gsap.registerPlugin(ScrollTrigger);
+
+/* ============================================================
+   3D SCENE - CITY + HERO ON ROOFTOP + SCROLL-FIRED WEB
+   Clean scene: skyline, hero silhouette, one epic web line
+   that draws farther across the sky with every scroll.
+============================================================ */
+const canvas=document.getElementById('gl');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.setClearColor(0x000000,0);
+
+const scene=new THREE.Scene();
+scene.fog=new THREE.Fog(0xFBFAF5,26,60);
+const camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,200);
+camera.position.set(-2,3.5,14);
+
+const INK=0x15151C, RED=0xE0202F, BLUE=0x2342D6, YELLOW=0xE8A800, PAPER=0xF2EFE6;
+
+/* ---------- CITY SKYLINE (windows texture + ink edges) ---------- */
+function windowTexture(w,h){
+  const c=document.createElement('canvas');c.width=64;c.height=128;
+  const x=c.getContext('2d');
+  x.fillStyle='#EFEBDE';x.fillRect(0,0,64,128);
+  x.fillStyle='rgba(21,21,28,.8)';
+  for(let r=8;r<124;r+=14)for(let col=8;col<60;col+=14){
+    if(Math.random()<.72)x.fillRect(col,r,7,8);
+    else{x.fillStyle='rgba(255,196,0,.9)';x.fillRect(col,r,7,8);x.fillStyle='rgba(21,21,28,.8)';}
+  }
+  const t=new THREE.CanvasTexture(c);
+  t.repeat.set(Math.max(1,Math.round(w/1.4)),Math.max(1,Math.round(h/2.4)));
+  t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  return t;
+}
+const city=new THREE.Group();
+const buildingDefs=[
+  // [x, width, height, z]
+  [-13,3,7,-6],[-9.5,2.6,10,-5],[-6,3.4,14,-4.5],[-2.4,2.4,8,-6.5],
+  [0.8,3,11,-5.5],[4.4,2.8,9,-6],[8.2,3.6,12.5,-2.6],[12.6,3,8,-6.2],[16.2,3.4,10.5,-5.4],
+  [-17,3,9,-7],[19.8,2.8,7.5,-7]
+];
+const HERO_BIDX=6, HERO_BH=12.5;
+let heroBuilding=null;
+buildingDefs.forEach((d,i)=>{
+  const [bx,bw,bh,bz]=d;
+  const g=new THREE.BoxGeometry(bw,bh,bw);
+  const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({map:windowTexture(bw,bh)}));
+  m.position.set(bx,bh/2-4.5,bz);
+  city.add(m);
+  const edges=new THREE.LineSegments(new THREE.EdgesGeometry(g),new THREE.LineBasicMaterial({color:INK,transparent:true,opacity:.9}));
+  edges.position.copy(m.position);
+  city.add(edges);
+  // rooftop ledge
+  const ledge=new THREE.Mesh(new THREE.BoxGeometry(bw+.3,.22,bw+.3),new THREE.MeshBasicMaterial({color:INK}));
+  ledge.position.set(bx,bh-4.5+.11,bz);
+  city.add(ledge);
+  if(i===HERO_BIDX)heroBuilding=m; // foreground right tower = hero's perch
+});
+scene.add(city);
+
+/* distant flat skyline silhouette for depth */
+const farRow=new THREE.Group();
+for(let i=0;i<16;i++){
+  const w=2+Math.random()*2.5,h=4+Math.random()*8;
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:0xD9D4C4,transparent:true,opacity:.55}));
+  m.position.set(-22+i*3,h/2-4.5,-16);
+  farRow.add(m);
+}
+scene.add(farRow);
+
+/* a couple of comic clouds */
+const clouds=new THREE.Group();
+for(let i=0;i<4;i++){
+  const cg=new THREE.Group();
+  for(let b=0;b<4;b++){
+    const s=new THREE.Mesh(new THREE.SphereGeometry(.7+Math.random()*.5,10,10),new THREE.MeshBasicMaterial({color:0xFFFFFF}));
+    s.position.set(b*.9-1.3,Math.random()*.3,0);
+    cg.add(s);
+    const o=new THREE.LineSegments(new THREE.EdgesGeometry(s.geometry),new THREE.LineBasicMaterial({color:INK,transparent:true,opacity:.12}));
+    o.position.copy(s.position);cg.add(o);
+  }
+  cg.position.set(-14+i*9,6.5+Math.random()*3,-10-Math.random()*4);
+  cg.userData={sp:.08+Math.random()*.12};
+  clouds.add(cg);
+}
+scene.add(clouds);
+
+/* ---------- HERO SILHOUETTE (original ink figure, crouched, arm out) ---------- */
+const hero=new THREE.Group();
+const inkMat=new THREE.MeshBasicMaterial({color:INK});
+function part(geom,x,y,z,rx=0,ry=0,rz=0,sx=1,sy=1,sz=1){
+  const m=new THREE.Mesh(geom,inkMat);
+  m.position.set(x,y,z);m.rotation.set(rx,ry,rz);m.scale.set(sx,sy,sz);
+  hero.add(m);return m;
+}
+/* crouched pose built from primitives - pure silhouette */
+part(new THREE.SphereGeometry(.34,14,14), .12,1.62,0, 0,0,0, 1,.92,1);            // head
+part(new THREE.CylinderGeometry(.26,.34,.95,10), -.08,.95,0, 0,0,.5);             // torso (leaning forward)
+part(new THREE.CylinderGeometry(.11,.13,.85,8), -.42,.42,.16, 0,0,1.25);          // back thigh
+part(new THREE.CylinderGeometry(.09,.11,.8,8), -.95,.18,.16, 0,0,-.9);            // back shin folded
+part(new THREE.CylinderGeometry(.11,.13,.8,8), -.1,.36,-.18, 0,0,.35);            // front thigh
+part(new THREE.CylinderGeometry(.09,.11,.75,8), .12,.0,-.18, 0,0,-.15);           // front shin
+part(new THREE.BoxGeometry(.34,.12,.16), .16,-.36,-.18);                          // front foot
+part(new THREE.BoxGeometry(.34,.12,.16), -1.2,-.1,.16);                           // back foot
+part(new THREE.CylinderGeometry(.09,.1,.8,8), .58,1.45,.05, 0,0,-1.35);           // firing arm (extended)
+part(new THREE.SphereGeometry(.12,10,10), .98,1.62,.05);                          // firing hand
+part(new THREE.CylinderGeometry(.08,.09,.6,8), -.28,1.15,-.22, 0,0,.9);           // support arm down
+part(new THREE.SphereGeometry(.1,10,10), -.52,.88,-.22);                          // support hand on ledge
+hero.scale.setScalar(2.2);
+/* place hero on rooftop corner of his tower, facing LEFT across the city */
+const perch=new THREE.Vector3(heroBuilding.position.x-.4, heroBuilding.position.y+(HERO_BH/2)+.25, heroBuilding.position.z+1.2);
+hero.position.copy(perch);
+const HERO_BASE_ROT=2.75; // turned so the firing arm points left across the skyline
+hero.rotation.y=HERO_BASE_ROT;
+scene.add(hero);
+/* world-space position of the firing hand (recomputed each frame) */
+const handLocal=new THREE.Vector3(.98,1.62,.05);
+function handWorld(){return hero.localToWorld(handLocal.clone());}
+
+/* ---------- GIANT COMIC MOON behind the hero (silhouette pops) ---------- */
+const moon=new THREE.Group();
+const moonDisc=new THREE.Mesh(new THREE.CircleGeometry(4.6,48),new THREE.MeshBasicMaterial({color:0xFFE9A8}));
+const moonRing=new THREE.Mesh(new THREE.RingGeometry(4.6,4.78,48),new THREE.MeshBasicMaterial({color:INK}));
+const moonRing2=new THREE.Mesh(new THREE.RingGeometry(5.1,5.16,48),new THREE.MeshBasicMaterial({color:INK,transparent:true,opacity:.35}));
+moon.add(moonDisc,moonRing,moonRing2);
+/* halftone craters */
+for(let i=0;i<7;i++){
+  const cr=new THREE.Mesh(new THREE.CircleGeometry(.22+Math.random()*.4,20),new THREE.MeshBasicMaterial({color:0xF3D67C}));
+  const a=Math.random()*Math.PI*2, r=Math.random()*3.4;
+  cr.position.set(Math.cos(a)*r,Math.sin(a)*r,.01);
+  moon.add(cr);
+}
+moon.position.set(perch.x+.6, perch.y+2.6, perch.z-6.5);
+scene.add(moon);
+
+/* ---------- THE WEB - long 3D strand that draws on scroll ---------- */
+const WEB_SEGS=900, RADIAL=6;
+function buildWebCurve(){
+  const h=handWorld();
+  const pts=[
+    h,
+    h.clone().add(new THREE.Vector3(-3.2,2.6,1.2)),
+    new THREE.Vector3(3.5,8,-1),
+    new THREE.Vector3(-1,5,2.5),
+    new THREE.Vector3(-6,9,-2),
+    new THREE.Vector3(-11,5.5,3),
+    new THREE.Vector3(-16,10,-3),
+    new THREE.Vector3(-21,6.5,2),
+    new THREE.Vector3(-27,10.5,-4),
+    new THREE.Vector3(-33,7.5,1)
+  ];
+  return new THREE.CatmullRomCurve3(pts);
+}
+let webCurve=buildWebCurve();
+const webGeo=new THREE.TubeGeometry(webCurve,WEB_SEGS,.045,RADIAL,false);
+const web=new THREE.Mesh(webGeo,new THREE.MeshBasicMaterial({color:INK}));
+web.geometry.setDrawRange(0,0);
+scene.add(web);
+/* thin twin strand slightly offset (double thread look) */
+const web2=new THREE.Mesh(new THREE.TubeGeometry(webCurve,WEB_SEGS,.016,RADIAL,false),new THREE.MeshBasicMaterial({color:RED}));
+web2.position.y=.09;
+web2.geometry.setDrawRange(0,0);
+scene.add(web2);
+
+/* glowing tip + spark at the leading end of the web */
+const tip=new THREE.Mesh(new THREE.SphereGeometry(.14,10,10),new THREE.MeshBasicMaterial({color:RED}));
+const tipRing=new THREE.Mesh(new THREE.TorusGeometry(.3,.02,6,24),new THREE.MeshBasicMaterial({color:INK,transparent:true,opacity:.7}));
+scene.add(tip,tipRing);
+
+/* radial web "checkpoints" that pop in as the web passes them */
+const checkpoints=[];
+[ .22, .45, .68, .9 ].forEach((at,i)=>{
+  const grp=new THREE.Group();
+  const SP=10;
+  for(let s=0;s<SP;s++){
+    const a=s/SP*Math.PI*2;
+    const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(Math.cos(a)*.9,Math.sin(a)*.9,0)]);
+    grp.add(new THREE.Line(g,new THREE.LineBasicMaterial({color:INK,transparent:true,opacity:.8})));
+  }
+  for(let r=.25;r<=.85;r+=.2){
+    const ringPts=[];
+    for(let s=0;s<=SP;s++){const a=s/SP*Math.PI*2;ringPts.push(new THREE.Vector3(Math.cos(a)*r,Math.sin(a)*r,0));}
+    grp.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(ringPts),new THREE.LineBasicMaterial({color:INK,transparent:true,opacity:.6})));
+  }
+  const p=webCurve.getPointAt(at);
+  grp.position.copy(p);
+  grp.scale.setScalar(0);
+  grp.userData={at,shown:false};
+  scene.add(grp);
+  checkpoints.push(grp);
+});
+
+/* ---------- scroll drives the web ---------- */
+let webProgress=0, webTarget=0;
+function setHud(p){
+  document.getElementById('hudWeb').textContent=String(Math.round(p*100)).padStart(3,'0')+'%';
+}
+addEventListener('scroll',()=>{
+  const h=document.documentElement;
+  const p=h.scrollTop/(h.scrollHeight-h.clientHeight);
+  webTarget=p;
+  document.getElementById('progFill').style.width=p*100+'%';
+  document.getElementById('hudScroll').textContent=String(Math.round(p*100)).padStart(3,'0')+'%';
+},{passive:true});
+
+/* ---------- camera follows the web tip across the city ---------- */
+const camBase={x:0,y:5,z:14};
+
+/* mouse parallax + web sway */
+const mouse={x:0,y:0};
+addEventListener('pointermove',e=>{mouse.x=e.clientX/innerWidth-.5;mouse.y=e.clientY/innerHeight-.5;});
+
+/* ---------- CLICK = hero fires a quick web at your cursor ---------- */
+const shots=[];
+const WORDS=['BUILD!','SHIP!','AI!','RAG!','NEXT!'];
+function comicBurst(x,y){
+  const el=document.createElement('div');
+  el.className='burst';
+  el.style.left=x+'px';el.style.top=y+'px';
+  const word=WORDS[Math.floor(Math.random()*WORDS.length)];
+  const col=Math.random()<.5?'#E0202F':'#2342D6';
+  el.innerHTML=`<svg viewBox="0 0 100 100"><polygon points="50,2 58,30 88,12 70,38 98,46 70,56 86,84 56,68 50,98 42,68 14,86 30,56 2,48 30,40 12,12 42,30" fill="${col}" stroke="#15151C" stroke-width="3"/></svg><b>${word}</b>`;
+  document.body.appendChild(el);
+  gsap.fromTo(el,{scale:0,rotate:-20},{scale:1,rotate:6,duration:.35,ease:'back.out(3)'});
+  gsap.to(el,{scale:0,opacity:0,duration:.3,delay:.55,ease:'back.in(2)',onComplete:()=>el.remove()});
+}
+function webSplat(x,y){
+  const el=document.createElement('div');
+  el.className='websplat';
+  el.style.left=x+'px';el.style.top=y+'px';
+  let spokes='',rings='';
+  for(let i=0;i<10;i++){const a=i/10*Math.PI*2;spokes+=`<line x1="60" y1="60" x2="${60+Math.cos(a)*56}" y2="${60+Math.sin(a)*56}"/>`;}
+  for(let r=14;r<=52;r+=13){
+    let d='';
+    for(let i=0;i<=10;i++){const a=i/10*Math.PI*2;d+=(i===0?'M':'L')+(60+Math.cos(a)*r)+','+(60+Math.sin(a)*r);}
+    rings+=`<path d="${d}Z" fill="none"/>`;
+  }
+  el.innerHTML=`<svg width="120" height="120" viewBox="0 0 120 120" stroke="#15151C" stroke-width="1.6" opacity=".75">${spokes}${rings}</svg>`;
+  document.body.appendChild(el);
+  gsap.fromTo(el,{scale:.2,opacity:1,rotate:Math.random()*40-20},{scale:1,duration:.3,ease:'back.out(2)'});
+  gsap.to(el,{opacity:0,scale:1.15,duration:.6,delay:.5,onComplete:()=>el.remove()});
+}
+addEventListener('pointerdown',e=>{
+  // unproject cursor onto a plane in front of camera
+  const v=new THREE.Vector3((e.clientX/innerWidth)*2-1,-(e.clientY/innerHeight)*2+1,.5).unproject(camera);
+  const dir=v.sub(camera.position).normalize();
+  const target=camera.position.clone().add(dir.multiplyScalar(13));
+  const start=handWorld();
+  const mid=start.clone().lerp(target,.5).add(new THREE.Vector3(0,1.2,0));
+  const curve=new THREE.CatmullRomCurve3([start,mid,target]);
+  const SEG=60;
+  const g=new THREE.TubeGeometry(curve,SEG,.03,5,false);
+  g.setDrawRange(0,0);
+  const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:RED}));
+  scene.add(m);
+  const shot={mesh:m,seg:SEG,t:0};
+  shots.push(shot);
+  // quick hero arm recoil
+  gsap.fromTo(hero.rotation,{z:0},{z:-.06,duration:.08,yoyo:true,repeat:1});
+  comicBurst(e.clientX,e.clientY);
+  webSplat(e.clientX,e.clientY);
+});
+
+/* ---------- render loop ---------- */
+const clock=new THREE.Clock();
+function tick(){
+  const dt=clock.getDelta(), t=clock.getElapsedTime();
+
+  /* hero idle: breathing + slight head/arm motion */
+  hero.position.y=perch.y+Math.sin(t*1.6)*.04;
+  hero.rotation.y=HERO_BASE_ROT+Math.sin(t*.5)*.05+mouse.x*.15;
+  /* moon gently pulses + always faces camera */
+  moon.lookAt(camera.position);
+  const mp=1+Math.sin(t*1.2)*.015;
+  moon.scale.set(mp,mp,mp);
+
+  /* web extends toward scroll target with smoothing - fires fast on every scroll */
+  webProgress+=(webTarget-webProgress)*.08;
+  const segsOn=Math.floor(webProgress*WEB_SEGS);
+  web.geometry.setDrawRange(0,Math.max(0,segsOn*RADIAL*6));
+  web2.geometry.setDrawRange(0,Math.max(0,segsOn*RADIAL*6));
+  setHud(webProgress);
+
+  /* tip follows the leading end + spins */
+  const tp=webCurve.getPointAt(Math.max(.001,Math.min(.999,webProgress)));
+  tip.position.copy(tp);
+  tip.scale.setScalar(1+Math.sin(t*8)*.18);
+  tipRing.position.copy(tp);
+  tipRing.rotation.z=t*3; tipRing.rotation.y=t*2;
+  tipRing.scale.setScalar(1+Math.sin(t*5)*.12);
+
+  /* gentle sway of the whole web like it's alive in the wind */
+  web.rotation.z=Math.sin(t*.8)*.012+mouse.y*.02;
+  web2.rotation.z=web.rotation.z;
+
+  /* checkpoint radial webs pop when the strand reaches them */
+  checkpoints.forEach(cp=>{
+    if(!cp.userData.shown&&webProgress>cp.userData.at){
+      cp.userData.shown=true;
+      gsap.to(cp.scale,{x:1,y:1,z:1,duration:.6,ease:'back.out(2.5)'});
+    }
+    if(cp.userData.shown&&webProgress<cp.userData.at-.03){
+      cp.userData.shown=false;
+      gsap.to(cp.scale,{x:0,y:0,z:0,duration:.3});
+    }
+    cp.lookAt(camera.position);
+  });
+
+  /* camera: starts framing the hero on the right, then follows the web tip left across the city */
+  const followX=THREE.MathUtils.lerp(camBase.x, tp.x*.55, webProgress);
+  const followY=THREE.MathUtils.lerp(camBase.y, 2.5+tp.y*.35, webProgress);
+  const followZ=THREE.MathUtils.lerp(camBase.z, 15.5, webProgress);
+  camera.position.x+=((followX+mouse.x*1.6)-camera.position.x)*.05;
+  camera.position.y+=((followY-mouse.y*1.0)-camera.position.y)*.05;
+  camera.position.z+=(followZ-camera.position.z)*.05;
+  const lookStart=new THREE.Vector3(perch.x-4.6,perch.y-2.2,perch.z); // hero sits right-of-center
+  const look=new THREE.Vector3().lerpVectors(lookStart,tp,Math.min(1,webProgress*1.25+.05));
+  camera.lookAt(look);
+
+  /* clouds drift */
+  clouds.children.forEach(c=>{c.position.x+=c.userData.sp*dt; if(c.position.x>22)c.position.x=-22;});
+
+  /* fired shots animate out then fade */
+  for(let i=shots.length-1;i>=0;i--){
+    const s=shots[i];
+    s.t+=dt*3.2;
+    const on=Math.min(1,s.t);
+    s.mesh.geometry.setDrawRange(0,Math.floor(on*s.seg)*5*6);
+    if(s.t>1.4){
+      s.mesh.material.transparent=true;
+      s.mesh.material.opacity=Math.max(0,1-(s.t-1.4)*2);
+      if(s.mesh.material.opacity<=0){scene.remove(s.mesh);s.mesh.geometry.dispose();shots.splice(i,1);}
+    }
+  }
+
+  renderer.render(scene,camera);
+  if(!reduceMotion)requestAnimationFrame(tick);
+}
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+
+/* ============================================================
+   CURSOR WEB TRAIL (2D)
+============================================================ */
+const trailC=document.getElementById('webTrail'), tx=trailC.getContext('2d');
+function sizeTrail(){trailC.width=innerWidth;trailC.height=innerHeight;}
+sizeTrail(); addEventListener('resize',sizeTrail);
+const trail=[];
+addEventListener('pointermove',e=>{trail.unshift({x:e.clientX,y:e.clientY});if(trail.length>26)trail.pop();});
+(function trailLoop(){
+  tx.clearRect(0,0,trailC.width,trailC.height);
+  if(trail.length>2&&!reduceMotion){
+    for(let i=1;i<trail.length;i++){
+      const f=1-i/trail.length;
+      tx.strokeStyle=`rgba(224,32,47,${f*.5})`;
+      tx.lineWidth=f*3;
+      tx.beginPath();tx.moveTo(trail[i-1].x,trail[i-1].y);tx.lineTo(trail[i].x,trail[i].y);tx.stroke();
+      if(i%5===0){
+        tx.strokeStyle=`rgba(21,21,28,${f*.3})`;tx.lineWidth=1;
+        const dx=trail[i].x-trail[i-1].x,dy=trail[i].y-trail[i-1].y,L=Math.hypot(dx,dy)||1;
+        const nx=-dy/L*7*f,ny=dx/L*7*f;
+        tx.beginPath();tx.moveTo(trail[i].x-nx,trail[i].y-ny);tx.lineTo(trail[i].x+nx,trail[i].y+ny);tx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(trailLoop);
+})();
+
+/* ============================================================
+   LOADER -> ENTRANCE
+============================================================ */
+const statuses=['BOOTING KRISH.AI...','LOADING PROJECTS...','SYNCING RESUME...','INKING THE SKYLINE...','READY TO BUILD!'];
+let progress=0,si=0;
+const loadFill=document.getElementById('loadFill'),loadStatus=document.getElementById('loadStatus');
+const loadInt=setInterval(()=>{
+  progress=Math.min(100,progress+Math.random()*14);
+  loadFill.style.width=progress+'%';
+  if(progress/100*statuses.length>si&&si<statuses.length-1){si++;loadStatus.textContent=statuses[si];}
+  if(progress>=100){clearInterval(loadInt);loadStatus.textContent=statuses[statuses.length-1];setTimeout(launch,400);}
+},110);
+
+function launch(){
+  document.getElementById('loader').classList.add('done');
+  tick();
+  if(reduceMotion){renderer.render(scene,camera);return;}
+  const tl=gsap.timeline({defaults:{ease:'power4.out'}});
+  tl.to('.hero h1 .row span',{y:0,rotateX:0,duration:1.4,stagger:.15,ease:'back.out(1.4)'},.2)
+    .to('.hero-tag',{opacity:1,duration:1},.5)
+    .to('.hero-sub',{opacity:1,duration:1},1)
+    .to('.hero-actions',{opacity:1,duration:1},1.2)
+    .to('.hero-meta',{opacity:1,duration:1},1.4)
+    .from(camera.position,{z:24,y:8,duration:2.6,ease:'power3.out'},0);
+  scrambleText(document.getElementById('scrambleTag'));
+}
+
+/* ============================================================
+   3D HERO TEXT - mouse tilt, depth rows, idle bob
+============================================================ */
+const h13d=document.getElementById('h13d');
+document.querySelectorAll('.hero h1 .row').forEach((r,i)=>r.style.transform=`translateZ(${i*38}px)`);
+addEventListener('pointermove',e=>{
+  if(reduceMotion)return;
+  const x=e.clientX/innerWidth-.5, y=e.clientY/innerHeight-.5;
+  gsap.to(h13d,{rotateY:x*14,rotateX:-y*10,duration:.8,ease:'power2.out',transformPerspective:1100});
+});
+gsap.to(h13d,{y:-8,duration:2.6,yoyo:true,repeat:-1,ease:'sine.inOut'});
+
+/* ============================================================
+   TEXT SCRAMBLE
+============================================================ */
+const CHARS='!<>-_\\/[]{}-=+*^?#01';
+function scrambleText(el){
+  const original=el.dataset.original||el.textContent;
+  el.dataset.original=original;
+  let frame=0;const total=40;
+  const timer=setInterval(()=>{
+    frame++;
+    el.textContent=original.split('').map((ch,i)=>{
+      if(ch===' ')return' ';
+      if(i<(frame/total)*original.length)return ch;
+      return CHARS[Math.floor(Math.random()*CHARS.length)];
+    }).join('');
+    if(frame>=total){el.textContent=original;clearInterval(timer);}
+  },30);
+}
+
+/* ============================================================
+   SCROLL FX
+============================================================ */
+gsap.utils.toArray('.reveal').forEach(el=>{
+  gsap.to(el,{opacity:1,y:0,duration:1.1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}});
+});
+gsap.utils.toArray('.flip3d').forEach(el=>{
+  gsap.to(el,{opacity:1,rotateX:0,y:0,duration:1.3,ease:'back.out(1.5)',transformPerspective:900,
+    scrollTrigger:{trigger:el,start:'top 86%'}});
+});
+gsap.utils.toArray('.num[data-count]').forEach(el=>{
+  const target=+el.dataset.count;
+  ScrollTrigger.create({trigger:el,start:'top 90%',once:true,onEnter:()=>{
+    gsap.fromTo(el,{innerText:0},{innerText:target,duration:2,ease:'power2.out',snap:{innerText:1},
+      onUpdate(){el.textContent=Math.floor(+el.textContent)+(target===100?'%':'+');},
+      onComplete(){el.textContent=target+(target===100?'%':'+');}});
+  }});
+});
+const skewSet=gsap.quickSetter('.skew-wrap','skewY','deg');
+ScrollTrigger.create({onUpdate(self){
+  const v=Math.max(-4,Math.min(4,self.getVelocity()/-450));
+  skewSet(v);
+  gsap.to('.skew-wrap',{skewY:0,duration:.7,ease:'power3.out',overwrite:true});
+}});
+gsap.utils.toArray('.card').forEach((c,i)=>{
+  gsap.fromTo(c,{y:60*(i%2?1:-.4)},{y:0,scrollTrigger:{trigger:'.cards',start:'top 95%',end:'top 30%',scrub:1}});
+});
+
+/* ============================================================
+   CURSOR + MAGNETIC + TILT
+============================================================ */
+const dot=document.querySelector('.cursor-dot'),ring=document.querySelector('.cursor-ring'),label=document.getElementById('cursorLabel');
+let rx=0,ry=0;
+addEventListener('pointermove',e=>{
+  dot.style.transform=`translate(${e.clientX}px,${e.clientY}px) translate(-50%,-50%)`;
+  label.style.left=e.clientX+'px';label.style.top=e.clientY+'px';
+  rx=e.clientX;ry=e.clientY;
+});
+(function ringLoop(){
+  const cur=ring.getBoundingClientRect();
+  const cx=cur.left+cur.width/2,cy=cur.top+cur.height/2;
+  ring.style.transform=`translate(${cx+(rx-cx)*.18}px,${cy+(ry-cy)*.18}px) translate(-50%,-50%)`;
+  requestAnimationFrame(ringLoop);
+})();
+document.querySelectorAll('.hoverable,a,button').forEach(el=>{
+  el.addEventListener('pointerenter',()=>{
+    ring.classList.add('hovering');
+    if(el.dataset.label){label.textContent=el.dataset.label;label.style.opacity=1;}
+  });
+  el.addEventListener('pointerleave',()=>{ring.classList.remove('hovering');label.style.opacity=0;});
+});
+document.querySelectorAll('.magnetic').forEach(btn=>{
+  btn.addEventListener('pointermove',e=>{
+    const r=btn.getBoundingClientRect();
+    gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.32,y:(e.clientY-r.top-r.height/2)*.32,duration:.4});
+  });
+  btn.addEventListener('pointerleave',()=>gsap.to(btn,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)'}));
+});
+document.querySelectorAll('.card').forEach(card=>{
+  card.addEventListener('pointermove',e=>{
+    const r=card.getBoundingClientRect();
+    const px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
+    card.style.setProperty('--mx',px*100+'%');card.style.setProperty('--my',py*100+'%');
+    gsap.to(card,{rotateY:(px-.5)*16,rotateX:(.5-py)*16,duration:.5,ease:'power2.out',transformPerspective:1000});
+  });
+  card.addEventListener('pointerleave',()=>gsap.to(card,{rotateX:0,rotateY:0,duration:.8,ease:'elastic.out(1,.5)'}));
+});
+</script>
 </body>
 </html>
-
