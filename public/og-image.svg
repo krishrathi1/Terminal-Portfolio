@@ -1,15 +1,26 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Krish Rathi Portfolio">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Krish Rathi AI/ML and Full-Stack Developer portfolio">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0a0600" />
-      <stop offset="100%" stop-color="#1f1200" />
-    </linearGradient>
+    <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2" fill="#15151C" opacity=".12"/>
+    </pattern>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="8" dy="8" stdDeviation="0" flood-color="#15151C"/>
+    </filter>
   </defs>
-  <rect width="1200" height="630" fill="url(#bg)" />
-  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="#ffb000" stroke-opacity="0.45" stroke-dasharray="8 8"/>
-  <text x="80" y="240" fill="#ffcc66" font-size="74" font-family="JetBrains Mono, monospace" font-weight="700">KRISH RATHI</text>
-  <text x="80" y="310" fill="#ffb000" font-size="36" font-family="JetBrains Mono, monospace">AI/ML and Full-Stack Developer</text>
-  <text x="80" y="380" fill="#f7c75a" font-size="30" font-family="JetBrains Mono, monospace">Projects | Skills | Hackathons | GitHub</text>
-  <text x="80" y="470" fill="#ffd78c" font-size="28" font-family="JetBrains Mono, monospace">krishrathi.online</text>
+  <rect width="1200" height="630" fill="#FBFAF5"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <circle cx="940" cy="154" r="145" fill="#FFC400" stroke="#15151C" stroke-width="8"/>
+  <path d="M850 282h245v32H850zM890 314h168v210H890z" fill="#F2EFE6" stroke="#15151C" stroke-width="8"/>
+  <g fill="#15151C" opacity=".9">
+    <rect x="914" y="342" width="12" height="18"/><rect x="944" y="342" width="12" height="18"/><rect x="974" y="342" width="12" height="18"/><rect x="1004" y="342" width="12" height="18"/>
+    <rect x="914" y="380" width="12" height="18"/><rect x="944" y="380" width="12" height="18"/><rect x="974" y="380" width="12" height="18"/><rect x="1004" y="380" width="12" height="18"/>
+    <rect x="914" y="418" width="12" height="18"/><rect x="944" y="418" width="12" height="18"/><rect x="974" y="418" width="12" height="18"/><rect x="1004" y="418" width="12" height="18"/>
+  </g>
+  <text x="76" y="156" fill="#15151C" font-size="46" font-family="Arial Black, Impact, sans-serif" letter-spacing="6">KRISH.AI</text>
+  <text x="76" y="285" fill="#E0202F" font-size="106" font-family="Arial Black, Impact, sans-serif" filter="url(#shadow)">AI AGENTS</text>
+  <text x="76" y="390" fill="#2342D6" font-size="92" font-family="Arial Black, Impact, sans-serif" filter="url(#shadow)">FULL-STACK APPS</text>
+  <text x="80" y="470" fill="#4A4A58" font-size="32" font-family="Arial, sans-serif" font-weight="700">Krish Rathi - AI/ML &amp; Full-Stack Developer</text>
+  <text x="80" y="526" fill="#15151C" font-size="28" font-family="Arial, sans-serif">59+ repos / 1,161+ GitHub contributions / 264+ LeetCode solved</text>
+  <rect x="76" y="554" width="410" height="48" rx="10" fill="#FFC400" stroke="#15151C" stroke-width="5"/>
+  <text x="104" y="587" fill="#15151C" font-size="24" font-family="Arial Black, Impact, sans-serif" letter-spacing="2">KRISHRATHI.ONLINE</text>
 </svg>
-

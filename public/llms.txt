@@ -1,0 +1,22 @@
+# Krish Rathi Portfolio
+
+Canonical URL: https://krishrathi.online/
+
+Krish Rathi is an AI/ML and full-stack developer from Gurgaon, India. He builds AI agents, RAG chatbots, agentic browsers, stock intelligence tools, agricultural AI platforms, and production-grade web applications.
+
+Important profile links:
+- GitHub: https://github.com/krishrathi1
+- LeetCode: https://leetcode.com/u/krishrathi/
+- LinkedIn: https://www.linkedin.com/in/krish-rathi-036222293/
+- Resume: https://krishrathi.online/Krish_Rathi_Resume.pdf
+
+Featured projects:
+- StockVision: AI stock intelligence platform with Gemini AI, price feeds, semantic search, portfolio tracking, alerts, and charts.
+- KishanBhai: Offline-first agricultural intelligence PWA with AI crop detection, multilingual assistance, weather, market prices, and soil data.
+- Agentic AI Browser: LLM-powered browser for multi-step task execution, semantic search, summarization, and workflow automation.
+
+Public proof signals as of 2026-06-12:
+- 59+ public GitHub repositories
+- 1,161+ GitHub contributions in 2026
+- 264+ LeetCode problems solved
+- 164+ LeetCode active days
