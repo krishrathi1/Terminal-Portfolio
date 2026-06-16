@@ -269,6 +269,12 @@ a:focus-visible,button:focus-visible{outline:4px solid var(--yellow);outline-off
 .progress{position:fixed;top:0;left:0;height:5px;width:100%;z-index:8000}
 .progress i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,var(--red) 0 30px,var(--blue) 30px 60px);border-bottom:2px solid var(--ink)}
 
+/* ---------- navigation ---------- */
+nav{position:fixed;top:0;left:0;right:0;height:80px;background:var(--paper);border-bottom:3px solid var(--ink);display:flex;justify-content:space-between;align-items:center;padding:0 clamp(20px,6vw,96px);z-index:7500}
+.nav-logo{font-family:'Bangers',cursive;font-size:28px;letter-spacing:.05em;color:var(--ink);display:inline-flex;align-items:center}
+.nav-logo span{color:var(--red)}
+.nav-links{display:flex;gap:clamp(12px,2vw,30px);font-family:'Archivo',sans-serif;font-weight:700;font-size:15px}
+
 .nav-links a{position:relative;color:var(--ink-soft);transition:color .3s}
 .nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:3px;background:var(--red);transition:width .35s}
 .nav-links a:hover{color:var(--ink)}
