@@ -199,6 +199,30 @@
 .theme-overdrive .halftone { opacity:0.1; background-image:radial-gradient(var(--ink) 1px,transparent 1.4px); }
 .theme-overdrive .cursor-dot { background: var(--ink); border-color: var(--ink); }
 .theme-overdrive .cursor-ring { border-color: var(--ink); }
+
+/* CRT Retro CRT Monitor Scanlines, Flicker & Glow */
+.theme-overdrive::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0.25;
+}
+.theme-overdrive {
+  animation: crtFlicker 0.15s infinite;
+}
+@keyframes crtFlicker {
+  0% { opacity: 0.99; }
+  50% { opacity: 1; }
+  100% { opacity: 0.995; }
+}
+.theme-overdrive * {
+  text-shadow: 0 0 3px rgba(0, 255, 65, 0.45);
+}
 .glitch-anim { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite; }
 @keyframes glitch {
   0% { transform: translate(0) }
@@ -570,7 +594,7 @@ footer{position:relative;z-index:2;border-top:3px solid var(--ink);padding:30px 
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <a class="nav-cta hoverable" href="/Krish_Rathi_Resume.pdf" target="_blank" rel="noopener">Resume</a>
-    <button id="muteBtn" class="nav-mute hoverable" aria-label="Toggle sound" style="margin-left:0;">🔇</button>
+    <button id="themeBtn" class="nav-mute hoverable" aria-label="Toggle system mode" style="margin-left:0; min-width:110px;">⚡ NORMAL</button>
   </div>
 </nav>
 
@@ -945,125 +969,22 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 gsap.registerPlugin(ScrollTrigger);
 
 /* ============================================================
-   PROGRAMMATIC WEB AUDIO SYNTHESIZER
-   Synthesizes all retro SFX dynamically to avoid asset loading.
+   MINIMAL Retro Click Audio Synthesizer
 ============================================================ */
 class AudioSynth {
   constructor() {
     this.ctx = null;
-    this.muted = true;
-    this.humOsc = null;
-    this.humGain = null;
   }
   init() {
     if (this.ctx) return;
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
   }
-  toggleMute(forceState) {
+  playClick() {
     this.init();
-    if (this.ctx && this.ctx.state === 'suspended') {
+    if (!this.ctx) return;
+    if (this.ctx.state === 'suspended') {
       this.ctx.resume();
     }
-    this.muted = forceState !== undefined ? forceState : !this.muted;
-    if (this.muted) {
-      this.stopHum();
-    } else {
-      this.startHum();
-    }
-    return this.muted;
-  }
-  startHum() {
-    if (this.muted || !this.ctx) return;
-    try {
-      this.stopHum();
-      this.humOsc = this.ctx.createOscillator();
-      this.humGain = this.ctx.createGain();
-      const filter = this.ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(120, this.ctx.currentTime);
-      this.humOsc.type = 'sine';
-      this.humOsc.frequency.setValueAtTime(55, this.ctx.currentTime);
-      this.humGain.gain.setValueAtTime(0.015, this.ctx.currentTime);
-      this.humOsc.connect(filter);
-      filter.connect(this.humGain);
-      this.humGain.connect(this.ctx.destination);
-      this.humOsc.start();
-      this.modulateHum();
-    } catch(e) {
-      console.warn("Failed to start hum", e);
-    }
-  }
-  modulateHum() {
-    if (!this.humGain || this.muted || !this.ctx) return;
-    const t = this.ctx.currentTime;
-    this.humGain.gain.linearRampToValueAtTime(0.01 + Math.random() * 0.01, t + 2);
-    setTimeout(() => this.modulateHum(), 2000);
-  }
-  stopHum() {
-    if (this.humOsc) {
-      try { this.humOsc.stop(); } catch(e) {}
-      this.humOsc = null;
-    }
-    this.humGain = null;
-  }
-  playTick() {
-    if (this.muted) return;
-    this.init();
-    if (!this.ctx) return;
-    try {
-      const t = this.ctx.currentTime;
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(1200, t);
-      gain.gain.setValueAtTime(0.005, t);
-      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.02);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start();
-      osc.stop(t + 0.03);
-    } catch(e) {}
-  }
-  playType() {
-    if (this.muted) return;
-    this.init();
-    if (!this.ctx) return;
-    try {
-      const t = this.ctx.currentTime;
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(140 + Math.random() * 80, t);
-      osc.frequency.exponentialRampToValueAtTime(40, t + 0.04);
-      gain.gain.setValueAtTime(0.05, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start();
-      osc.stop(t + 0.05);
-      
-      const bufferSize = this.ctx.sampleRate * 0.015;
-      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-      const noise = this.ctx.createBufferSource();
-      noise.buffer = buffer;
-      const noiseFilter = this.ctx.createBiquadFilter();
-      noiseFilter.type = 'bandpass';
-      noiseFilter.frequency.setValueAtTime(900, t);
-      const noiseGain = this.ctx.createGain();
-      noiseGain.gain.setValueAtTime(0.015, t);
-      noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.015);
-      noise.connect(noiseFilter);
-      noiseFilter.connect(noiseGain);
-      noiseGain.connect(this.ctx.destination);
-      noise.start();
-    } catch(e) {}
-  }
-  playClick() {
-    if (this.muted) return;
-    this.init();
-    if (!this.ctx) return;
     try {
       const t = this.ctx.currentTime;
       const osc = this.ctx.createOscillator();
@@ -1079,64 +1000,8 @@ class AudioSynth {
       osc.stop(t + 0.09);
     } catch(e) {}
   }
-  playSuccess() {
-    if (this.muted) return;
-    this.init();
-    if (!this.ctx) return;
-    try {
-      const t = this.ctx.currentTime;
-      const osc1 = this.ctx.createOscillator();
-      const osc2 = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc1.type = 'sine';
-      osc1.frequency.setValueAtTime(523.25, t);
-      osc1.frequency.setValueAtTime(659.25, t + 0.08);
-      osc2.type = 'sine';
-      osc2.frequency.setValueAtTime(783.99, t);
-      osc2.frequency.setValueAtTime(1046.50, t + 0.08);
-      gain.gain.setValueAtTime(0.035, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
-      osc1.connect(gain);
-      osc2.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc1.start();
-      osc2.start();
-      osc1.stop(t + 0.23);
-      osc2.stop(t + 0.23);
-    } catch(e) {}
-  }
-  playAlarm() {
-    if (this.muted) return;
-    this.init();
-    if (!this.ctx) return;
-    try {
-      const t = this.ctx.currentTime;
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(180, t);
-      osc.frequency.linearRampToValueAtTime(500, t + 0.15);
-      osc.frequency.linearRampToValueAtTime(180, t + 0.3);
-      osc.frequency.linearRampToValueAtTime(500, t + 0.45);
-      osc.frequency.linearRampToValueAtTime(100, t + 0.6);
-      gain.gain.setValueAtTime(0.025, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start();
-      osc.stop(t + 0.6);
-    } catch(e) {}
-  }
 }
 const synth = new AudioSynth();
-
-function initAudioOnFirstAction() {
-  document.removeEventListener('pointerdown', initAudioOnFirstAction);
-  document.removeEventListener('keydown', initAudioOnFirstAction);
-  synth.init();
-}
-document.addEventListener('pointerdown', initAudioOnFirstAction);
-document.addEventListener('keydown', initAudioOnFirstAction);
 
 /* ============================================================
    3D SCENE - CITY + HERO ON ROOFTOP + SCROLL-FIRED WEB
@@ -1634,9 +1499,65 @@ addEventListener('pointermove', e => {
   }
 });
 
+let matrixDrops = [];
+const matrixFontSize = 14;
+
+function initMatrixDrops() {
+  const columns = Math.ceil(trailC.width / matrixFontSize);
+  matrixDrops = [];
+  for (let i = 0; i < columns; i++) {
+    matrixDrops.push({
+      x: i * matrixFontSize,
+      y: Math.random() * -trailC.height,
+      speed: 0.8 + Math.random() * 2
+    });
+  }
+}
+
+addEventListener('resize', () => {
+  if (document.body.classList.contains('theme-overdrive')) {
+    initMatrixDrops();
+  }
+});
+
 function drawTrail() {
   tx.clearRect(0, 0, trailC.width, trailC.height);
   if (reduceMotion) return;
+  
+  const isOverdrive = document.body.classList.contains('theme-overdrive');
+  
+  if (isOverdrive) {
+    if (matrixDrops.length === 0) {
+      initMatrixDrops();
+    }
+    tx.save();
+    tx.font = `${matrixFontSize}px 'JetBrains Mono', monospace`;
+    tx.fillStyle = 'rgba(0, 255, 65, 0.12)';
+    
+    matrixDrops.forEach(drop => {
+      const char = Math.random() < 0.35 
+        ? String.fromCharCode(0x30A0 + Math.floor(Math.random() * 96))
+        : (Math.random() < 0.5 ? '0' : '1');
+      
+      tx.shadowColor = '#00FF41';
+      tx.shadowBlur = 1;
+      tx.fillText(char, drop.x, drop.y);
+      
+      if (Math.random() > 0.8) {
+        tx.fillStyle = '#FFF';
+        tx.fillText(char, drop.x, drop.y);
+        tx.fillStyle = 'rgba(0, 255, 65, 0.12)';
+      }
+      
+      drop.y += drop.speed;
+      if (drop.y > trailC.height && Math.random() > 0.975) {
+        drop.y = Math.random() * -120;
+      }
+    });
+    tx.restore();
+  } else {
+    if (matrixDrops.length > 0) matrixDrops = [];
+  }
   
   for (let i = trailParticles.length - 1; i >= 0; i--) {
     const p = trailParticles[i];
@@ -1785,9 +1706,6 @@ document.addEventListener('pointerover', (e) => {
       } else {
         label.style.opacity = 0;
       }
-      if (el.id !== 'muteBtn') {
-        synth.playTick();
-      }
     }
   }
 });
@@ -1802,25 +1720,99 @@ document.addEventListener('pointerout', (e) => {
   }
 });
 
-document.addEventListener('click', (e) => {
-  const el = e.target.closest('.hoverable, a, button');
-  if (el && el.id !== 'muteBtn') {
-    synth.playClick();
+/* ============================================================
+   TEXT SCRAMBLE EFFECT
+============================================================ */
+class TextScramble {
+  constructor(el) {
+    this.el = el;
+    this.chars = '!<>-_\\/[]{}—=+*^?#________';
+    this.update = this.update.bind(this);
   }
+  setText(newText) {
+    const oldText = this.el.innerText;
+    const length = Math.max(oldText.length, newText.length);
+    const promise = new Promise((resolve) => this.resolve = resolve);
+    this.queue = [];
+    for (let i = 0; i < length; i++) {
+      const from = oldText[i] || '';
+      const to = newText[i] || '';
+      const start = Math.floor(Math.random() * 15);
+      const end = start + Math.floor(Math.random() * 15);
+      this.queue.push({ from, to, start, end });
+    }
+    cancelAnimationFrame(this.frameRequest);
+    this.frame = 0;
+    this.update();
+    return promise;
+  }
+  update() {
+    let output = '';
+    let complete = 0;
+    for (let i = 0, n = this.queue.length; i < n; i++) {
+      let { from, to, start, end, char } = this.queue[i];
+      if (this.frame >= end) {
+        complete++;
+        output += to;
+      } else if (this.frame >= start) {
+        if (!char || Math.random() < 0.28) {
+          char = this.chars[Math.floor(Math.random() * this.chars.length)];
+          this.queue[i].char = char;
+        }
+        output += `<span style="color:var(--red);font-weight:bold;">${char}</span>`;
+      } else {
+        output += from;
+      }
+    }
+    this.el.innerHTML = output;
+    if (complete === this.queue.length) {
+      this.resolve();
+    } else {
+      this.frameRequest = requestAnimationFrame(this.update);
+      this.frame++;
+    }
+  }
+}
+
+document.querySelectorAll('.nav-links a').forEach(el => {
+  const originalText = el.textContent;
+  const scramble = new TextScramble(el);
+  el.addEventListener('pointerenter', () => {
+    scramble.setText(originalText);
+  });
 });
 
-const muteBtn = document.getElementById('muteBtn');
-if(muteBtn) {
-  muteBtn.addEventListener('click', (e) => {
+/* ============================================================
+   SYSTEM OVERDRIVE THEME SWITCHER
+============================================================ */
+const themeBtn = document.getElementById('themeBtn');
+if(themeBtn) {
+  themeBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    const isMuted = synth.toggleMute();
-    muteBtn.textContent = isMuted ? '🔇' : '🔊';
-    muteBtn.setAttribute('aria-label', isMuted ? 'Unmute sound' : 'Mute sound');
-    if (!isMuted) {
-      synth.playSuccess();
+    
+    // Trigger CRT system glitch transition
+    document.body.classList.add('glitch-anim');
+    setTimeout(() => {
+      document.body.classList.remove('glitch-anim');
+    }, 600);
+
+    const isOverdrive = document.body.classList.toggle('theme-overdrive');
+    themeBtn.innerHTML = isOverdrive ? '⚡ OVERDRIVE' : '⚡ NORMAL';
+    themeBtn.style.background = isOverdrive ? 'var(--ink)' : 'var(--paper-2)';
+    themeBtn.style.color = isOverdrive ? 'var(--paper)' : 'var(--ink)';
+    
+    if (typeof printToTerminal === 'function') {
+      printToTerminal(`>>> SYSTEM MODE SWITCHED TO: ${isOverdrive ? 'OVERDRIVE (CRT-HACK)' : 'DEFAULT (PAPER)'}`, 'accent-line');
     }
   });
 }
+
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('.hoverable, a, button');
+  if (el) {
+    synth.playClick();
+  }
+});
 
 document.querySelectorAll('.magnetic').forEach(btn=>{
   btn.addEventListener('pointermove',e=>{
@@ -2040,9 +2032,7 @@ function processTypingQueue() {
       p.textContent += text[charIndex];
       charIndex++;
       
-      if (typeof synth !== 'undefined') {
-        synth.playType();
-      }
+      // typing synth removed
       
       if(terminalBody) terminalBody.scrollTop = terminalBody.scrollHeight;
       
@@ -2125,9 +2115,7 @@ addEventListener('keydown', e => {
       konamiIndex = 0;
       isClassifiedUnlocked = true;
       
-      if (typeof synth !== 'undefined') {
-        synth.playAlarm();
-      }
+      // alarm synth removed
       
       document.body.classList.add('theme-overdrive', 'glitch-anim');
       setTimeout(() => {
@@ -2191,9 +2179,43 @@ if(terminalInput) {
       }
       
       if(cmd === 'sudo overdrive') {
-        document.body.classList.toggle('theme-overdrive');
+        const isOverdrive = document.body.classList.toggle('theme-overdrive');
         document.body.classList.toggle('glitch-anim');
         setTimeout(() => document.body.classList.remove('glitch-anim'), 1000);
+        
+        // Sync themeBtn styling if clicked or typed
+        const themeBtn = document.getElementById('themeBtn');
+        if (themeBtn) {
+          themeBtn.innerHTML = isOverdrive ? '⚡ OVERDRIVE' : '⚡ NORMAL';
+          themeBtn.style.background = isOverdrive ? 'var(--ink)' : 'var(--paper-2)';
+          themeBtn.style.color = isOverdrive ? 'var(--paper)' : 'var(--ink)';
+        }
+      }
+      
+      if(cmd === 'hack') {
+        let pct = 0;
+        printToTerminal('>>> INITIALIZING DECRYPTION SEQUENCE...', 'warn-line');
+        const p = document.createElement('p');
+        p.className = 'accent-line';
+        if (terminalOutput) terminalOutput.appendChild(p);
+        
+        const interval = setInterval(() => {
+          pct += Math.floor(Math.random() * 12) + 4;
+          if (pct >= 100) {
+            pct = 100;
+            clearInterval(interval);
+            isClassifiedUnlocked = true;
+            p.textContent = '>>> PROGRESS: [████████████████████] 100% COMPLETE';
+            printToTerminal('>>> SUCCESS: DECRYPTION COMPLETED. ROUTE OPENED.', 'accent-line');
+            printToTerminal('>>> CLASSIFIED CHANNEL ACCESS UNLOCKED. TYPE \'classified\' TO VIEW.', 'warn-line');
+          } else {
+            const blocks = Math.floor(pct / 5);
+            const bar = '█'.repeat(blocks) + '░'.repeat(20 - blocks);
+            p.textContent = `>>> PROGRESS: [${bar}] ${pct}%`;
+            if (terminalBody) terminalBody.scrollTop = terminalBody.scrollHeight;
+          }
+        }, 120);
+        return;
       }
       
       if(terminalSets[cmd]) {
