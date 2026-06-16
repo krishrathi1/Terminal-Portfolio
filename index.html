@@ -1007,8 +1007,9 @@ class AudioSynth {
     this.humGain = null;
   }
   playTick() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted) return;
     this.init();
+    if (!this.ctx) return;
     try {
       const t = this.ctx.currentTime;
       const osc = this.ctx.createOscillator();
@@ -1024,8 +1025,9 @@ class AudioSynth {
     } catch(e) {}
   }
   playType() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted) return;
     this.init();
+    if (!this.ctx) return;
     try {
       const t = this.ctx.currentTime;
       const osc = this.ctx.createOscillator();
@@ -1059,8 +1061,9 @@ class AudioSynth {
     } catch(e) {}
   }
   playClick() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted) return;
     this.init();
+    if (!this.ctx) return;
     try {
       const t = this.ctx.currentTime;
       const osc = this.ctx.createOscillator();
@@ -1077,8 +1080,9 @@ class AudioSynth {
     } catch(e) {}
   }
   playSuccess() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted) return;
     this.init();
+    if (!this.ctx) return;
     try {
       const t = this.ctx.currentTime;
       const osc1 = this.ctx.createOscillator();
@@ -1102,8 +1106,9 @@ class AudioSynth {
     } catch(e) {}
   }
   playAlarm() {
-    if (this.muted || !this.ctx) return;
+    if (this.muted) return;
     this.init();
+    if (!this.ctx) return;
     try {
       const t = this.ctx.currentTime;
       const osc = this.ctx.createOscillator();
@@ -1766,16 +1771,42 @@ addEventListener('pointermove',e=>{
   ring.style.transform=`translate(${cx+(rx-cx)*.18}px,${cy+(ry-cy)*.18}px) translate(-50%,-50%)`;
   requestAnimationFrame(ringLoop);
 })();
-document.querySelectorAll('.hoverable,a,button').forEach(el=>{
-  el.addEventListener('pointerenter',()=>{
-    ring.classList.add('hovering');
-    if(el.dataset.label){label.textContent=el.dataset.label;label.style.opacity=1;}
-    if(el.id !== 'muteBtn') synth.playTick();
-  });
-  el.addEventListener('pointerleave',()=>{ring.classList.remove('hovering');label.style.opacity=0;});
-  el.addEventListener('click',()=>{
-    if(el.id !== 'muteBtn') synth.playClick();
-  });
+let hoveredElement = null;
+
+document.addEventListener('pointerover', (e) => {
+  const el = e.target.closest('.hoverable, a, button');
+  if (el) {
+    if (hoveredElement !== el) {
+      hoveredElement = el;
+      ring.classList.add('hovering');
+      if (el.dataset.label) {
+        label.textContent = el.dataset.label;
+        label.style.opacity = 1;
+      } else {
+        label.style.opacity = 0;
+      }
+      if (el.id !== 'muteBtn') {
+        synth.playTick();
+      }
+    }
+  }
+});
+
+document.addEventListener('pointerout', (e) => {
+  if (!hoveredElement) return;
+  const toElement = e.relatedTarget;
+  if (!toElement || !hoveredElement.contains(toElement)) {
+    hoveredElement = null;
+    ring.classList.remove('hovering');
+    label.style.opacity = 0;
+  }
+});
+
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('.hoverable, a, button');
+  if (el && el.id !== 'muteBtn') {
+    synth.playClick();
+  }
 });
 
 const muteBtn = document.getElementById('muteBtn');
