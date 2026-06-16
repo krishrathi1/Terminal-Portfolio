@@ -4,6 +4,8 @@ Canonical URL: https://krishrathi.online/
 
 Krish Rathi is an AI/ML and full-stack developer from Gurgaon, India. He builds AI agents, RAG chatbots, agentic browsers, stock intelligence tools, agricultural AI platforms, and production-grade web applications.
 
+The site now presents his profile as an interactive AI control room with a terminal-style build signal panel, project deep-dive deck, proof wall, build timeline, and collaboration lanes.
+
 Important profile links:
 - GitHub: https://github.com/krishrathi1
 - LeetCode: https://leetcode.com/u/krishrathi/

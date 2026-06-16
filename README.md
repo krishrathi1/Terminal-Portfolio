@@ -6,8 +6,10 @@ Static Vite portfolio for Krish Rathi, built from the comic-style HTML theme in 
 
 - AI/ML and full-stack profile
 - Featured projects
+- Interactive AI control room and project deep-dive deck
 - Current GitHub and LeetCode stats
 - Proof Wall and interactive Mission Board
+- Build timeline and collaboration lanes
 - Resume download from `public/Krish_Rathi_Resume.pdf`
 
 ## SEO Assets
